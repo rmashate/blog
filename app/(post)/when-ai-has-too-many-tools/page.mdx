@@ -1,92 +1,91 @@
 export const metadata = {
-  title: "When Your AI Has Too Many Tools (And What We Learned Trying to Fix It)",
-  description: "I had 11 MCP tool servers and 128 tools. Only 5-6 were actually working. Here's what we learned building a Tool Registry to optimize Claude's performance.",
-  openGraph: {
-    title: "When Your AI Has Too Many Tools (And What We Learned Trying to Fix It)",
-    description: "I had 11 MCP tool servers and 128 tools. Only 5-6 were actually working. Here's what we learned building a Tool Registry to optimize Claude's performance.",
-    images: ['/tool-overload-hero.png'],
-  },
+  title: "When Your AI Has Too Many Tools",
+  description: "How I optimized Claude's MCP tools from 128 to 89, saving 37% of context window tokens",
+  date: "2025-11-12",
+  tags: ["MCP", "AI", "Tool Optimization", "Claude"]
 };
 
-![Person overwhelmed by toolboxes](/tool-overload-hero.png)
+# When Your AI Has Too Many Tools
 
-Last week, Anthropic published [a blog post about building AI agents with tools](https://www.anthropic.com/news/model-context-protocol). Think of it like giving your AI a toolbox - email access, file management, web search, etc. The more tools you add, the more powerful your AI becomes.
+AI assistants are getting more powerful. We can now connect them to multiple services through Model Context Protocol (MCP) servers—giving them access to Gmail, GitHub, file systems, and more. But there's a hidden cost: **every available tool gets loaded into your context window, even if you don't use them all**.
 
-Except there's a catch.
+I experienced this firsthand with Claude. I had configured 11 MCP servers and 128 tools. But when I audited what Claude could actually see, only 5-6 servers were working properly. The rest? Dead weight in my prompt, consuming tokens I could've used for actual work.
 
-## My Tool Problem
+## The Token Tax of Tool Overload
 
-I had 11 different tool servers running for Claude. That's 128 individual tools. Gmail, GitHub, file systems, web browsers - you name it, I had it configured.
+Each tool takes space in your prompt. Let me show you what I had:
 
-**Wait - what's a "server"?** Think of it like a department at Home Depot. You don't buy "tools" - you go to the Plumbing Department, the Electrical Department, etc. Each department (server) has its own collection of related tools.
+| Server | Tools |
+|--------|-------|
+| Gmail | 13 |
+| GitHub | 26 |
+| Desktop Commander | 16 |
+| Filesystem | 13 |
+| Memory Metadata | 11 |
+| Windows CLI | 9 |
+| Puppeteer | 7 |
+| Brave Search | 2 |
+| MCP Installer | 2 |
+| Sequential Thinking | 1 |
 
-Here's what my setup looked like:
+That's ~27,000 tokens spent on tools alone. Many of them were redundant or barely used. The problem: Claude would see all these tools, parse them all, and consider using them—even when simpler, built-in alternatives existed.
 
-| Server | Tools Available | What It Does |
-|--------|-----------------|--------------|
-| Gmail | 13 tools | send_email, search_emails, read_email, create_label... |
-| GitHub | 26 tools | create_repository, create_pull_request, search_code... |
-| Desktop Commander | 16 tools | read_file, write_file, execute_command, search_files... |
-| Puppeteer | 7 tools | navigate_browser, click_element, take_screenshot... |
-| Memory | 11 tools | create_entities, search_nodes, add_observations... |
-| Brave Search | 2 tools | web_search, web_fetch |
+## The Aggressive Optimization
 
-**The problem?** Every time I asked Claude a question, it had to load information about all 128 tools into its "working memory" (we call these tokens). Imagine trying to think while someone reads you the instruction manual for every tool in Home Depot. That's what I was doing to Claude.
+I didn't just cut back. I went aggressive. Here's my final stack:
 
-## The Audit That Changed Everything
+**Removed:**
+- **Filesystem** – Desktop Commander does everything better
+- **Windows CLI** – Redundant with Desktop Commander
+- **MCP Installer** – I don't install packages during chats
+- **Brave Search** – Using built-in web_search instead
+- **Sequential Thinking** – Native reasoning works fine
 
-We built something called a "Tool Registry" - basically a smart index that catalogs all your tools so you can find them quickly. Think of it like a card catalog at a library instead of wandering through every aisle.
+**Kept:**
+- **Gmail** – Unique capability, irreplaceable
+- **GitHub** – Version control and code operations
+- **Desktop Commander** – File system + CLI combined
+- **Memory Metadata** – My personal memory system
+- **Puppeteer** – Browser automation for specific tasks
+- **Vercel** – Deployment automation
 
-When we ran the registry against my setup, we discovered something surprising: **only 5-6 of my 11 servers were actually working properly**. The rest? Just sitting there, consuming tokens and doing nothing.
+From 11 servers → **6 servers**
+From 128 tools → **89 tools**
+From ~27k tokens → **~17k tokens**
 
-Using the registry's analysis, we optimized:
-- **Before:** 11 servers, 128 tools, ~27,000 tokens
-- **After:** 6 servers, 89 tools, ~17,000 tokens
-- **Result:** 37% reduction in "brain overhead"
+**That's a 37% context window improvement.**
 
-Some tools were redundant (I had three different ways to access files). Some weren't even loading correctly. The registry made this visible in minutes instead of hours of manual debugging.
+## Why This Matters
 
-## The Limitation We Hit
+Context window is currency in AI. Every tool you don't actually use is a theft of that currency. Before my optimization:
 
-Here's where it gets interesting - and frustrating.
+- Prompt was bloated
+- Claude had to parse irrelevant tools
+- Decisions took longer (cognitive overhead)
+- Token waste accumulated across every conversation
 
-The Tool Registry works beautifully for auditing and optimization. But we can't use it **during** a conversation with Claude. Why? Because Claude can only work with tools that are pre-loaded when the conversation starts. It's like being told "you can only use tools currently in your hands" - you can't run to the toolbox mid-task.
+After:
 
-We call this the "static tool limitation." Claude's architecture loads tools at startup, not on-demand.
+- Lean stack with clear purpose
+- Faster tool discovery
+- More tokens for actual work
+- Philosophy: Essential only
 
-## Real Use Cases That Work Today
+## The MCP Discovery Pattern
 
-Even with this limitation, the Tool Registry solved real problems:
+Here's what I learned: Most MCP servers are "nice to have," not "need to have." When evaluating tools, ask:
 
-**Use Case 1: The Initial Setup**  
-New to MCP? The registry shows you exactly which tools you have, which ones work, and which ones conflict. Instead of trial-and-error configuration, you get a diagnostic report.
+1. **Is this better than what's built-in?** (Filesystem is not better than Desktop Commander)
+2. **Do I actually use this?** (I never installed MCP packages mid-chat)
+3. **Does this reduce cognitive overhead or add it?** (Too many search tools add overhead)
 
-**Use Case 2: The Performance Audit**  
-Your Claude feels slow? Run the registry. It'll tell you if you're loading 50 tools when you only use 5. We cut my token overhead by 37% in one session.
+## What I'd Recommend
 
-**Use Case 3: The Tool Discovery**  
-"I need to search my Gmail" - the registry tells you that you have that capability in your `gmail` server under `search_emails`. No more guessing tool names.
+If you're building your own MCP stack:
 
-## What We Learned
+- Start with **3-5 core tools** (email, code, files, research)
+- Add specialized tools **only when you can measure the value**
+- Audit quarterly – remove what you're not using
+- Remember: A focused toolkit beats a comprehensive one
 
-Building this taught me that **sometimes the best tool isn't the one that does everything - it's the one that helps you understand what you already have**.
-
-The Tool Registry won't dynamically fetch tools for Claude mid-conversation. But it will:
-- Show you what's broken in your setup
-- Identify redundant tools wasting tokens
-- Help you configure a lean, fast tool collection
-
-**The takeaway?** Start small. The Anthropic approach works great with 5-10 carefully chosen tools. The registry helps you figure out which 5-10 tools those should be.
-
-We're still exploring ways to make dynamic tool loading work. But until then, we have a system that makes the static approach dramatically better.
-
----
-
-## Join the Conversation
-
-This is part of my ongoing work building better AI systems. If you're working on MCP tools or thinking about similar problems, I'd love to connect.
-
-**[Connect on LinkedIn](https://linkedin.com/in/rmashate)** to discuss MCP optimization and AI systems  
-**[Check out my other posts](/)**
-
-*Building with MCP? Found this useful? Let me know what you're working on!*
+Your AI is most effective when it has exactly the tools it needs, not everything it could possibly want.
