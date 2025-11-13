@@ -1,6 +1,11 @@
 {
   "posts": [
     {
+      "id": "when-ai-has-too-many-tools",
+      "date": "November 12, 2025",
+      "title": "When Your AI Has Too Many Tools (And What We Learned Trying to Fix It)"
+    },
+    {
       "id": "customer-research-beats-assumptions",
       "date": "June 15, 2025",
       "title": "The $2M Lesson: Why Customer Research Beats Assumptions Every Time"
