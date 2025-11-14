@@ -1,0 +1,8 @@
+This entire directory (app/when-ai-has-too-many-tools) should be deleted.
+
+The correct blog post is located at: app/(post)/when-ai-has-too-many-tools/
+
+This duplicate is causing a build error:
+"You cannot have two parallel pages that resolve to the same path."
+
+To fix: Delete this entire app/when-ai-has-too-many-tools directory.
