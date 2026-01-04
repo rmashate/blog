@@ -1,0 +1,91 @@
+export const metadata = {
+  title: "When Your AI Has Too Many Tools",
+  description: "How I optimized Claude's MCP tools from 128 to 89, saving 37% of context window tokens",
+  date: "2025-11-12",
+  tags: ["MCP", "AI", "Tool Optimization", "Claude"]
+};
+
+# When Your AI Has Too Many Tools
+
+AI assistants are getting more powerful. We can now connect them to multiple services through Model Context Protocol (MCP) servers—giving them access to Gmail, GitHub, file systems, and more. But there's a hidden cost: **every available tool gets loaded into your context window, even if you don't use them all**.
+
+I experienced this firsthand with Claude. I had configured 11 MCP servers and 128 tools. But when I audited what Claude could actually see, only 5-6 servers were working properly. The rest? Dead weight in my prompt, consuming tokens I could've used for actual work.
+
+## The Token Tax of Tool Overload
+
+Each tool takes space in your prompt. Let me show you what I had:
+
+| Server | Tools |
+|--------|-------|
+| Gmail | 13 |
+| GitHub | 26 |
+| Desktop Commander | 16 |
+| Filesystem | 13 |
+| Memory Metadata | 11 |
+| Windows CLI | 9 |
+| Puppeteer | 7 |
+| Brave Search | 2 |
+| MCP Installer | 2 |
+| Sequential Thinking | 1 |
+
+That's ~27,000 tokens spent on tools alone. Many of them were redundant or barely used. The problem: Claude would see all these tools, parse them all, and consider using them—even when simpler, built-in alternatives existed.
+
+## The Aggressive Optimization
+
+I didn't just cut back. I went aggressive. Here's my final stack:
+
+**Removed:**
+- **Filesystem** – Desktop Commander does everything better
+- **Windows CLI** – Redundant with Desktop Commander
+- **MCP Installer** – I don't install packages during chats
+- **Brave Search** – Using built-in web_search instead
+- **Sequential Thinking** – Native reasoning works fine
+
+**Kept:**
+- **Gmail** – Unique capability, irreplaceable
+- **GitHub** – Version control and code operations
+- **Desktop Commander** – File system + CLI combined
+- **Memory Metadata** – My personal memory system
+- **Puppeteer** – Browser automation for specific tasks
+- **Vercel** – Deployment automation
+
+From 11 servers → **6 servers**
+From 128 tools → **89 tools**
+From ~27k tokens → **~17k tokens**
+
+**That's a 37% context window improvement.**
+
+## Why This Matters
+
+Context window is currency in AI. Every tool you don't actually use is a theft of that currency. Before my optimization:
+
+- Prompt was bloated
+- Claude had to parse irrelevant tools
+- Decisions took longer (cognitive overhead)
+- Token waste accumulated across every conversation
+
+After:
+
+- Lean stack with clear purpose
+- Faster tool discovery
+- More tokens for actual work
+- Philosophy: Essential only
+
+## The MCP Discovery Pattern
+
+Here's what I learned: Most MCP servers are "nice to have," not "need to have." When evaluating tools, ask:
+
+1. **Is this better than what's built-in?** (Filesystem is not better than Desktop Commander)
+2. **Do I actually use this?** (I never installed MCP packages mid-chat)
+3. **Does this reduce cognitive overhead or add it?** (Too many search tools add overhead)
+
+## What I'd Recommend
+
+If you're building your own MCP stack:
+
+- Start with **3-5 core tools** (email, code, files, research)
+- Add specialized tools **only when you can measure the value**
+- Audit quarterly – remove what you're not using
+- Remember: A focused toolkit beats a comprehensive one
+
+Your AI is most effective when it has exactly the tools it needs, not everything it could possibly want.
