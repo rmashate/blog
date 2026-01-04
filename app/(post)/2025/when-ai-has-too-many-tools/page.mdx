@@ -7,6 +7,8 @@ export const metadata = {
 
 # When Your AI Has Too Many Tools
 
+<PostMetadata date="2025-11-12" readingTime={4} />
+
 AI assistants are getting more powerful. We can now connect them to multiple services through Model Context Protocol (MCP) servers—giving them access to Gmail, GitHub, file systems, and more. But there's a hidden cost: **every available tool gets loaded into your context window, even if you don't use them all**.
 
 I experienced this firsthand with Claude. I had configured 11 MCP servers and 128 tools. But when I audited what Claude could actually see, only 5-6 servers were working properly. The rest? Dead weight in my prompt, consuming tokens I could've used for actual work.
@@ -15,18 +17,26 @@ I experienced this firsthand with Claude. I had configured 11 MCP servers and 12
 
 Each tool takes space in your prompt. Let me show you what I had:
 
-| Server | Tools |
-|--------|-------|
-| Gmail | 13 |
-| GitHub | 26 |
-| Desktop Commander | 16 |
-| Filesystem | 13 |
-| Memory Metadata | 11 |
-| Windows CLI | 9 |
-| Puppeteer | 7 |
-| Brave Search | 2 |
-| MCP Installer | 2 |
-| Sequential Thinking | 1 |
+<table>
+  <thead>
+    <tr>
+      <th>Server</th>
+      <th>Tools</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Gmail</td><td>13</td></tr>
+    <tr><td>GitHub</td><td>26</td></tr>
+    <tr><td>Desktop Commander</td><td>16</td></tr>
+    <tr><td>Filesystem</td><td>13</td></tr>
+    <tr><td>Memory Metadata</td><td>11</td></tr>
+    <tr><td>Windows CLI</td><td>9</td></tr>
+    <tr><td>Puppeteer</td><td>7</td></tr>
+    <tr><td>Brave Search</td><td>2</td></tr>
+    <tr><td>MCP Installer</td><td>2</td></tr>
+    <tr><td>Sequential Thinking</td><td>1</td></tr>
+  </tbody>
+</table>
 
 That's ~27,000 tokens spent on tools alone. Many of them were redundant or barely used. The problem: Claude would see all these tools, parse them all, and consider using them—even when simpler, built-in alternatives existed.
 
@@ -89,3 +99,5 @@ If you're building your own MCP stack:
 - Remember: A focused toolkit beats a comprehensive one
 
 Your AI is most effective when it has exactly the tools it needs, not everything it could possibly want.
+
+<PostFooter />

@@ -17,6 +17,8 @@ import { Callout } from "app/(post)/components/callout";
 import { YouTube } from "app/(post)/components/youtube";
 import { Ref, FootNotes, FootNote } from "app/(post)/components/footnotes";
 import { Blockquote as blockquote } from "app/(post)/components/blockquote";
+import { PostMetadata } from "app/(post)/components/post-metadata";
+import { PostFooter } from "app/(post)/components/post-footer";
 import {
   Table as table,
   THead as thead,
@@ -60,5 +62,7 @@ export function useMDXComponents(components: {
     Ref,
     FootNotes,
     FootNote,
+    PostMetadata,
+    PostFooter,
   };
 }

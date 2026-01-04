@@ -29,15 +29,16 @@
     "react-wrap-balancer": "^1.1.1",
     "react-youtube": "^10.1.0",
     "recharts": "^3.2.1",
+    "remark-gfm": "^4.0.1",
     "swr": "^2.3.6",
     "time-ago": "^0.2.1"
   },
   "devDependencies": {
     "@types/comma-number": "^2.1.0",
+    "@types/mdx": "^2.0.10",
     "@types/node": "24.7.2",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.1",
-    "@types/mdx": "^2.0.10",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.56.0",
     "eslint-config-next": "14.1.0",
