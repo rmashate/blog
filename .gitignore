@@ -10,3 +10,5 @@ TODO
 .env*.local
 fonts/*
 !fonts/init.mjs
+package-lock.json
+tsconfig.tsbuildinfo
