@@ -15,18 +15,56 @@ I experienced this firsthand with Claude. I had configured 11 MCP servers and 12
 
 Each tool takes space in your prompt. Let me show you what I had:
 
-| Server | Tools |
-|--------|-------|
-| Gmail | 13 |
-| GitHub | 26 |
-| Desktop Commander | 16 |
-| Filesystem | 13 |
-| Memory Metadata | 11 |
-| Windows CLI | 9 |
-| Puppeteer | 7 |
-| Brave Search | 2 |
-| MCP Installer | 2 |
-| Sequential Thinking | 1 |
+<table>
+  <thead>
+    <tr>
+      <th>Server</th>
+      <th>Tools</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Gmail</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <td>GitHub</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td>Desktop Commander</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>Filesystem</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <td>Memory Metadata</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <td>Windows CLI</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <td>Puppeteer</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td>Brave Search</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>MCP Installer</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>Sequential Thinking</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
 
 That's ~27,000 tokens spent on tools alone. Many of them were redundant or barely used. The problem: Claude would see all these tools, parse them all, and consider using them—even when simpler, built-in alternatives existed.
 
