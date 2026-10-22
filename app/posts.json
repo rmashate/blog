@@ -1,6 +1,11 @@
 {
   "posts": [
     {
+      "id": "legalclarify-contract-clarity",
+      "date": "October 21, 2026",
+      "title": "LegalClarify: A Clearer Starting Point for Your Next Client Contract"
+    },
+    {
       "id": "when-ai-has-too-many-tools",
       "date": "November 12, 2025",
       "title": "When Your AI Has Too Many Tools (And What We Learned Trying to Fix It)"

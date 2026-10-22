@@ -16,15 +16,13 @@ type Views = {
 };
 
 export const getPosts = async () => {
-  // If Redis/KV is not configured, return posts with mock view counts
+  // Hide counts when analytics is not configured.
   if (!redis) {
     const posts = postsData.posts.map((post): Post => {
-      // Generate consistent mock views based on post ID (so they don't change on each request)
-      const mockViews = post.id.charCodeAt(0) + post.id.charCodeAt(1) || 42;
       return {
         ...post,
-        views: mockViews,
-        viewsFormatted: commaNumber(mockViews),
+        views: 0,
+        viewsFormatted: "",
       };
     });
     return posts;
