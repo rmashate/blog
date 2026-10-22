@@ -8,6 +8,7 @@ export default async function rpc(fnName, body) {
       "content-type": "application/json",
     },
     body: JSON.stringify(body),
+    signal: AbortSignal.timeout(8000),
   });
 
   if (res.ok) {

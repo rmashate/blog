@@ -6,7 +6,20 @@ import {
 } from "./notion";
 
 export async function Books() {
-  const books = await getData();
+  let books;
+  try {
+    books = await getData();
+  } catch {
+    console.warn("Book-list source is unavailable; showing its original source link.");
+    return (
+      <p className="mx-auto max-w-2xl px-5 text-neutral-600 dark:text-neutral-400">
+        The live book list is temporarily unavailable. You can still visit the{" "}
+        <a className="underline" href="https://rauchg.notion.site/fa0a337c38074aa9b30fdddc6ef4ec2e?v=29294b4b7b0f405f8f5eaf4454c258a2">
+          original reading list
+        </a>.
+      </p>
+    );
+  }
   return (
     <div className="books grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-10 px-5 mb-10">
       {books.map((book, i) => (
